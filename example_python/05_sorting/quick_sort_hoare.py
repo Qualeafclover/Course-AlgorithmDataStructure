@@ -22,12 +22,27 @@
 Hoare partition と呼びます。
 """
 
+import argparse
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Insertion Sort Example")
+    parser.add_argument(
+        "--num",
+        nargs="+",
+        type=int,
+        default=[15, 27, 3, 9, 30, 21, 6, 14, 33, 18],
+        help="List of numbers to sort (default: %(default)s)",
+    )
+    return parser.parse_args()
+
 
 # 左端を pivot にする in-place クイックソート
 # Hoare partition 方式（シンプルな実装）
 def quick_sort_hoare_left(data, left, right):
+    compare_count = 0  # 比較回数のカウンタ
     if left >= right:
-        return
+        return compare_count
 
     pivot = data[left]  # 左端を pivot にする
     i = left
@@ -37,10 +52,12 @@ def quick_sort_hoare_left(data, left, right):
         # 右から pivot より小さい値を探す
         while i < j and data[j] >= pivot:
             j -= 1
+            compare_count += 1
 
         # 左から pivot より大きい値を探す
         while i < j and data[i] <= pivot:
             i += 1
+            compare_count += 1
 
         if i < j:
             data[i], data[j] = data[j], data[i]
@@ -49,8 +66,9 @@ def quick_sort_hoare_left(data, left, right):
     data[left], data[i] = data[i], data[left]
 
     # 再帰的に左右の配列を処理
-    quick_sort_hoare_left(data, left, i - 1)
-    quick_sort_hoare_left(data, i + 1, right)
+    compare_count += quick_sort_hoare_left(data, left, i - 1)
+    compare_count += quick_sort_hoare_left(data, i + 1, right)
+    return compare_count
 
 
 # 右端を pivot にする in-place クイックソート
@@ -83,38 +101,25 @@ def quick_sort_hoare_right(data, left, right):
     quick_sort_hoare_right(data, i + 1, right)
 
 
-# ---------------------------------------------------------------------
-# [左端 pivot クイックソート（Hoare partition）]
-print("-" * 30)
-print("左端をpivotとするクイックソート（Hoare partition）:")
+if __name__ == "__main__":
+    args = parse_args()
+    data = args.num
 
-# 配列の定義
-data = [3, 5, 8, 1, 2, 9, 4, 7, 6]
+    # ソート前の配列の表示
+    print("ソート前:", data)
 
-# ソート前の配列の表示
-print("ソート前:", data)
+    # クイックソート（左端pivot）の実行
+    print("クイックソート（左端pivot）を実行します。")
+    compare_count = quick_sort_hoare_left(data, 0, len(data) - 1)
+    print(f"比較回数: {compare_count}")
 
-# クイックソート（左端pivot）の実行
-print("クイックソート（左端pivot）を実行します。")
-quick_sort_hoare_left(data, 0, len(data) - 1)
+    # ソート後の配列の表示
+    print("ソート後:", data)
 
-# ソート後の配列の表示
-print("ソート後:", data)
+# ある程度整列されているデータ
+# python3 quick_sort_hoare.py --num 2 1 3 5 4 6 7 9 8 10
+# 比較回数: 31
 
-# ---------------------------------------------------------------------
-# [右端 pivot クイックソート（Hoare partition）] 
-print("-" * 30)
-print("右端をpivotとするクイックソート（Hoare partition）:")
-
-# 配列の定義
-data = [3, 5, 8, 1, 2, 9, 4, 7, 6]
-
-# ソート前の配列の表示
-print("ソート前:", data)
-
-# クイックソート（右端pivot）の実行
-print("クイックソート（右端pivot）を実行します。")
-quick_sort_hoare_right(data, 0, len(data) - 1)
-
-# ソート後の配列の表示
-print("ソート後:", data)
+# 完全にランダムなデータ
+# python3 quick_sort_hoare.py --num 1 5 3 8 2 7 4 10 6 9
+# 比較回数: 27
