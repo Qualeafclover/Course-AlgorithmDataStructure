@@ -94,6 +94,7 @@ if __name__ == "__main__":
         print("該当なし")
 
 # 動画サンプル
+# python3 str_matching_kmp.py --pattern abcabba
 # text   : ababcabcabababdabababcabababdababd
 # pattern: abcabba
 # KMP法で文字列を探索します。
@@ -102,6 +103,7 @@ if __name__ == "__main__":
 # 該当なし
 
 # 小テストサンプル
+# python3 str_matching_kmp.py --pattern ababca
 # text   : ababcabcabababdabababcabababdababd
 # pattern: ababca
 # KMP法で文字列を探索します。
