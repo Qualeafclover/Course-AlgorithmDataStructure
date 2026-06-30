@@ -7,6 +7,15 @@ KMP法による文字列パターン照合のサンプルプログラム。
 をKMP法で探索するプログラムを実装しています。
 """
 
+import argparse
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="KMP法による文字列パターン照合のサンプルプログラム")
+    parser.add_argument("--text", type=str, default="ababcabcabababdabababcabababdababd", help="テキスト文字列")
+    parser.add_argument("--pattern", type=str, default="ababca", help="パターン文字列")
+    return parser.parse_args()
+
 
 # ずらし表を作成する関数
 # LPS（Longest Prefix Suffix）配列と呼ばれる
@@ -39,6 +48,7 @@ def kmp_search(text, pattern):
     lps = compute_lps(pattern)
 
     print("LPS:", lps)
+    print("Shift table:", [1] + [i - lps[i - 1] for i in range(1, m)])
     
     result = []
 
@@ -63,20 +73,41 @@ def kmp_search(text, pattern):
     return result
 
 
-# ---------------------------------------------------------------------
-# テキストとパターンの定義
-text = "ababcabcabababdabababcabababdababd"
-pattern = "ababd"
-print(f"text   : {text}")
-print(f"pattern: {pattern}")
+if __name__ == "__main__":
+    args = parse_args()
+    text = args.text
+    pattern = args.pattern
 
-# 文字列の探索
-print("KMP法で文字列を探索します。")
-search_result = kmp_search(text, pattern)
+    # テキストとパターンの表示
+    print(f"text   : {text}")
+    print(f"pattern: {pattern}")
 
-# 結果の表示
-if len(search_result) > 0:
-    for sr in search_result:
-        print(f"該当箇所: {sr} 文字目")
-else:
-    print("該当なし")
+    # 文字列の探索
+    print("KMP法で文字列を探索します。")
+    search_result = kmp_search(text, pattern)
+
+    # 結果の表示
+    if len(search_result) > 0:
+        for sr in search_result:
+            print(f"該当箇所: {sr} 文字目")
+    else:
+        print("該当なし")
+
+
+# # ---------------------------------------------------------------------
+# # テキストとパターンの定義
+# text = "ababcabcabababdabababcabababdababd"
+# pattern = "ababd"
+# print(f"text   : {text}")
+# print(f"pattern: {pattern}")
+
+# # 文字列の探索
+# print("KMP法で文字列を探索します。")
+# search_result = kmp_search(text, pattern)
+
+# # 結果の表示
+# if len(search_result) > 0:
+#     for sr in search_result:
+#         print(f"該当箇所: {sr} 文字目")
+# else:
+#     print("該当なし")
