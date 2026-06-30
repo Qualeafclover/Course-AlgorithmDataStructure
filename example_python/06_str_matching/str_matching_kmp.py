@@ -93,21 +93,19 @@ if __name__ == "__main__":
     else:
         print("該当なし")
 
+# 動画サンプル
+# text   : ababcabcabababdabababcabababdababd
+# pattern: abcabba
+# KMP法で文字列を探索します。
+# LPS: [0, 0, 0, 1, 2, 0, 1]
+# Shift table: [1, 1, 2, 3, 3, 3, 6]
+# 該当なし
 
-# # ---------------------------------------------------------------------
-# # テキストとパターンの定義
-# text = "ababcabcabababdabababcabababdababd"
-# pattern = "ababd"
-# print(f"text   : {text}")
-# print(f"pattern: {pattern}")
-
-# # 文字列の探索
-# print("KMP法で文字列を探索します。")
-# search_result = kmp_search(text, pattern)
-
-# # 結果の表示
-# if len(search_result) > 0:
-#     for sr in search_result:
-#         print(f"該当箇所: {sr} 文字目")
-# else:
-#     print("該当なし")
+# 小テストサンプル
+# text   : ababcabcabababdabababcabababdababd
+# pattern: ababca
+# KMP法で文字列を探索します。
+# LPS: [0, 0, 1, 2, 0, 1]
+# Shift table: [1, 1, 2, 2, 2, 5]
+# 該当箇所: 0 文字目
+# 該当箇所: 17 文字目
